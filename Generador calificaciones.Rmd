@@ -1,0 +1,183 @@
+---
+title: "R Notebook"
+output: html_notebook
+title: "Generador de calificaciones "
+author: "Fernando Rojas de la Torre"
+date: "4/11/2021"
+editor_options: 
+  chunk_output_type: console
+---
+# Generador de calificaciones aleatorias con tendencias desde muy altas a muy bajas
+```{r genera Calificaciones}
+
+
+library(tidyverse)
+library(magrittr)
+library(fdth)
+
+calificaciones_muyaltas <- rbind(
+  as.tibble(sample(9:10,250,replace = T)),
+  as.tibble(sample(8:9,50,replace = T)),
+  as.tibble(sample(5:7,50,replace = T))
+  
+) %>% 
+  rename(calificacion=value) %>% 
+  cbind(sample(c("Juan","Alberto","Roberto","Flor","Jimena"),350,replace = T) %>% as_tibble()) %>% 
+  rename(estudiante=value) %>%  
+  arrange(desc(calificacion)) %>% 
+    as_tibble
+
+calificaciones_altas <- rbind(
+  as.tibble(sample(9:10,200,replace = T)),
+  as.tibble(sample(7:8,100,replace = T)),
+  as.tibble(sample(5:7,50,replace = T))
+  
+) %>% 
+  rename(calificacion=value) %>% 
+  cbind(sample(c("Juan","Alberto","Roberto","Flor","Jimena"),350,replace = T) %>% as_tibble()) %>% 
+  rename(estudiante=value) %>% 
+  arrange(desc(calificacion)) %>% 
+  as_tibble
+
+  
+
+calificaciones_medias <- rbind(
+  as.tibble(sample(9:10,125,replace = T)),
+  as.tibble(sample(7:8,125,replace = T)),
+  as.tibble(sample(5:6,100,replace = T))
+  
+) %>% 
+  rename(calificacion=value) %>% 
+  cbind(sample(c("Juan","Alberto","Roberto","Flor","Jimena"),350,replace = T) %>% as_tibble()) %>% 
+  rename(estudiante=value) %>% 
+  arrange(desc(calificacion)) %>% 
+  as_tibble
+
+  
+
+calificaciones_bajas <- rbind(
+  as.tibble(sample(5:7,200,replace = T)),
+  as.tibble(sample(7:8,100,replace = T)),
+  as.tibble(sample(9:10,50,replace = T))
+  
+) %>% 
+  rename(calificacion=value) %>% 
+  cbind(sample(c("Juan","Alberto","Roberto","Flor","Jimena"),350,replace = T) %>% as_tibble()) %>% 
+  rename(estudiante=value) %>% 
+  arrange(calificacion) %>% 
+  arrange(calificacion) %>% 
+  as_tibble
+
+  
+
+calificaciones_muybajas <- rbind(
+  as.tibble(sample(9:10,10,replace = T)),
+  as.tibble(sample(7:8,120,replace = T)),
+  as.tibble(sample(5:6,220,replace = T))
+  
+) %>% 
+  rename(calificacion=value) %>% 
+  cbind(sample(c("Juan","Alberto","Roberto","Flor","Jimena"),350,replace = T) %>% as_tibble()) %>% 
+  rename(estudiante=value) %>% 
+  arrange(desc(calificacion)) %>% 
+  as_tibble
+
+  
+
+
+```
+# Análisis Calificaciones muy bajas
+```{r Análisis muy bajas}
+
+tdf <- calificaciones_muybajas %>% 
+  fdt(k=5)
+  tdf
+  
+  
+  calificaciones_muybajas %>% 
+    ggplot(aes(calificacion))+geom_boxplot()+ coord_flip()
+  
+  calificaciones_muybajas %>% 
+  summarise(
+    promedio=mean(calificacion),
+    desviacion=sd(calificacion)
+            )
+```
+# Análisis Calificaciones bajas
+```{r Análisis bajas}
+
+tdf <- calificaciones_bajas %>% 
+  fdt(k=5)
+  tdf
+  
+  
+  calificaciones_bajas %>% 
+    ggplot(aes(calificacion))+geom_boxplot()+ coord_flip()
+  
+  calificaciones_bajas %>% 
+  summarise(
+    promedio=mean(calificacion),
+    desviacion=sd(calificacion)
+            )
+```
+# Análisis Calificaciones medias
+```{r Análisis medias}
+
+tdf <- calificaciones_medias %>% 
+  fdt(k=5)
+  tdf
+  
+  
+  calificaciones_medias %>% 
+    ggplot(aes(calificacion))+geom_boxplot()+ coord_flip()
+  
+  calificaciones_medias %>% 
+  summarise(
+    promedio=mean(calificacion),
+    desviacion=sd(calificacion)
+            )
+```
+# Análisis Calificaciones altas
+```{r Análisis altas}
+
+tdf <- calificaciones_altas %>% 
+  fdt(k=5)
+  tdf
+  
+  
+  calificaciones_altas %>% 
+    ggplot(aes(calificacion))+geom_boxplot()+ coord_flip()
+  
+  calificaciones_altas %>% 
+  summarise(
+    promedio=mean(calificacion),
+    desviacion=sd(calificacion)
+            )
+```
+# Análisis calificaciones muy altas
+```{r Análisis muy altas}
+
+tdf <- calificaciones_muyaltas %>% 
+  fdt(k=5)
+  tdf
+  
+  
+  calificaciones_muyaltas %>% 
+    ggplot(aes(calificacion))+geom_boxplot()+ coord_flip()
+  
+  calificaciones_muyaltas %>% 
+  summarise(
+    promedio=mean(calificacion),
+    desviacion=sd(calificacion)
+            )
+```
+
+
+
+
+```{r}
+
+calificaciones_muybajas %>% 
+  ggplot(aes(calificacion))+geom_boxplot(aes(color=estudiante)) + coord_flip()
+```
+
