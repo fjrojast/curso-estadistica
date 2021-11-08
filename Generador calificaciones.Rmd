@@ -7,7 +7,11 @@ date: "4/11/2021"
 editor_options: 
   chunk_output_type: console
 ---
+
 # Generador de calificaciones aleatorias con tendencias desde muy altas a muy bajas
+
+## Medidas de posición: Analisis de diversos tipos de calificaciones con tabla de frecuencias, media, desviación y diagrama de caja
+
 ```{r genera Calificaciones}
 
 
@@ -86,7 +90,9 @@ calificaciones_muybajas <- rbind(
 
 
 ```
-# Análisis Calificaciones muy bajas
+
+### Análisis Calificaciones muy bajas
+
 ```{r Análisis muy bajas}
 
 tdf <- calificaciones_muybajas %>% 
@@ -103,7 +109,9 @@ tdf <- calificaciones_muybajas %>%
     desviacion=sd(calificacion)
             )
 ```
-# Análisis Calificaciones bajas
+
+### Análisis Calificaciones bajas
+
 ```{r Análisis bajas}
 
 tdf <- calificaciones_bajas %>% 
@@ -120,7 +128,9 @@ tdf <- calificaciones_bajas %>%
     desviacion=sd(calificacion)
             )
 ```
-# Análisis Calificaciones medias
+
+### Análisis Calificaciones medias
+
 ```{r Análisis medias}
 
 tdf <- calificaciones_medias %>% 
@@ -137,7 +147,9 @@ tdf <- calificaciones_medias %>%
     desviacion=sd(calificacion)
             )
 ```
-# Análisis Calificaciones altas
+
+### Análisis Calificaciones altas
+
 ```{r Análisis altas}
 
 tdf <- calificaciones_altas %>% 
@@ -154,7 +166,9 @@ tdf <- calificaciones_altas %>%
     desviacion=sd(calificacion)
             )
 ```
-# Análisis calificaciones muy altas
+
+### Análisis calificaciones muy altas
+
 ```{r Análisis muy altas}
 
 tdf <- calificaciones_muyaltas %>% 
@@ -172,12 +186,28 @@ tdf <- calificaciones_muyaltas %>%
             )
 ```
 
-
-
-
 ```{r}
 
 calificaciones_muybajas %>% 
   ggplot(aes(calificacion))+geom_boxplot(aes(color=estudiante)) + coord_flip()
+```
+
+Medidas de forma: a la parte anterior, se añade el diagrama de densidad
+```{r}
+calificaciones_altas %>%   ggplot(aes(calificacion))+geom_density(fill="blue")+geom_boxplot(alpha=.1,fill="red")
+install.packages("moments")
+library(moments)
+
+
+calificaciones_altas %>% 
+  summarise(
+    promedio=mean(calificacion),
+    desviacion=sd(calificacion),
+    asimetría=skewness(calificacion),
+    curtosis=kurtosis(calificacion)
+            )
+calificaciones_altas$calificacion %T>% 
+  skewness() %>% 
+  kurtosis()
 ```
 
