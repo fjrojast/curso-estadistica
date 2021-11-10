@@ -18,6 +18,8 @@ editor_options:
 library(tidyverse)
 library(magrittr)
 library(fdth)
+library(moments)
+library(psych)
 
 calificaciones_muyaltas <- rbind(
   as.tibble(sample(9:10,250,replace = T)),
@@ -193,10 +195,10 @@ calificaciones_muybajas %>%
 ```
 
 Medidas de forma: a la parte anterior, se añade el diagrama de densidad
+
 ```{r}
 calificaciones_altas %>%   ggplot(aes(calificacion))+geom_density(fill="blue")+geom_boxplot(alpha=.1,fill="red")
-install.packages("moments")
-library(moments)
+
 
 
 calificaciones_altas %>% 
@@ -209,5 +211,110 @@ calificaciones_altas %>%
 calificaciones_altas$calificacion %T>% 
   skewness() %>% 
   kurtosis()
+```
+
+## Genera datos para asimetría y curtosis 
+
+```{r Genera ejemplos para asimetrías}
+# install.packages("psych")
+library(psych)
+
+
+
+#genera ejemplos de asimetrías
+asimetria_positiva <- rchisq(350,1) %>% as_tibble
+asimetria_negativa <- rchisq(350,1) %>% as_tibble %>% mutate(value=value*-1)
+asimetria_nula <- rnorm(350) %>% as_tibble() 
+
+
+# genera ejemplos de curtosis
+leptocurtica <- rchisq(350,1) %>% as_tibble() 
+mesocurtica <- rnorm(350,mean = 8) %>% as_tibble() 
+platicurtica <-  rbind(
+  rep(5,30) %>% as_tibble,
+  rep(6,50) %>% as_tibble,
+  rep(7,60) %>% as_tibble,
+  rep(8,80) %>% as_tibble,
+  rep(9,30) %>% as_tibble,
+  rep(10,30) %>% as_tibble
+)
+
+
+
+
+
+```
+
+## Analiza a partir de asimetría y curtosis
+
+```{r}
+
+#grafica y describe asimetría positiva
+asimetria_positiva %>% ggplot((aes(value)))+geom_density()+ labs(title="Asimetría positiva")
+describe(asimetria_positiva$value)
+
+
+#grafica y describe asimetría nula o también llamada simetría
+asimetria_nula %>% ggplot((aes(value)))+geom_density()+ labs(title="Asimetría nula")
+describe(asimetria_nula$value)
+
+#grafica y describe asimetría negativa
+asimetria_negativa %>% ggplot((aes(value)))+geom_density()+ labs(title="Asimetría negativa")
+describe(asimetria_negativa$value)
+
+
+#grafica y describe leptocurtosis o apuntamiento pronunciado
+leptocurtica %>% ggplot((aes(value)))+geom_density()+ labs(title="leptocurtosis")
+describe(leptocurtica$value)
+
+#grafica y describe mesocurtosis o apuntamiento tendiente a distribución normal
+mesocurtica %>% ggplot((aes(value)))+geom_density()+ labs(title="mesocurtosis")
+describe(mesocurtica$value)
+
+
+#grafica y describe platicurtosis o apuntamiento bajo
+platicurtica %>% ggplot((aes(value)))+geom_density()+ labs(title="platicurtosis")
+describe(platicurtica$value)
+
+
+
+# grafica y describe sobre calificaciones
+calificaciones_muybajas %>% 
+  ggplot(aes(calificacion)) +   geom_histogram(bins = 6)+ labs(title="calificaciones muy bajas")
+describe(calificaciones_muybajas$calificacion)
+
+
+calificaciones_bajas %>% 
+  ggplot(aes(calificacion)) +   geom_histogram(bins = 6)+ labs(title="calificaciones bajas")
+describe(calificaciones_muybajas$calificacion)
+
+
+
+
+calificaciones_medias %>% 
+  ggplot(aes(calificacion)) +   geom_histogram(bins = 6)+ labs(title="calificaciones medias")
+describe(calificaciones_muybajas$calificacion)
+
+
+
+
+calificaciones_altas %>% 
+  ggplot(aes(calificacion)) +   geom_histogram(bins = 6)+ labs(title="calificaciones altas")
+describe(calificaciones_muybajas$calificacion)
+
+
+
+calificaciones_muyaltas %>% 
+  ggplot(aes(calificacion)) +   geom_histogram(bins = 6)+ labs(title="calificaciones muy altas")
+describe(calificaciones_muybajas$calificacion)
+
+
+
+
+
+
+
+
+
 ```
 
