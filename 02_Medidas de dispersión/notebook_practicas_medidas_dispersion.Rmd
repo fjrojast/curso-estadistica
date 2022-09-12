@@ -1,0 +1,27 @@
+---
+title: "Práctica medidas de dispersión"
+output: html_notebook
+editor_options: 
+  chunk_output_type: console
+---
+
+
+
+```{r}
+
+# Lee el archivo con los datos generados para la práctica de dispersión
+
+practica_02_medidas_dispersion <- read_csv("02_Medidas de dispersión/datos_practicas_medidas_dispersion.csv")
+
+
+practica_02_medidas_dispersion %>% 
+  group_by(curso) %>% 
+  summarise(
+    promedio=mean(calificacion),
+    desviacion=sd(calificacion)
+  )
+
+
+
+```
+
