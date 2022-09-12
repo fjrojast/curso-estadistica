@@ -65,8 +65,7 @@ demostracion_alargado %>%
   ggplot(aes(calificacion))+geom_boxplot()+
   coord_flip()+
   transition_reveal(dia)+
-  facet_wrap(~alumno)+
-  labs(title='dia': {dia})
+  facet_wrap(~alumno)
   
 
 
