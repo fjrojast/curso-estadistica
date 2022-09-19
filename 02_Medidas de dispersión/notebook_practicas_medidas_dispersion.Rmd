@@ -9,18 +9,56 @@ editor_options:
 
 ```{r}
 
+
+
+# primeramente nos aseguramos de cargar las librerías que estaremos utilizando a lo largo de la actividad
+library(tidyverse)
+
+## cálculo de media y desviación estándard
+
 # Lee el archivo con los datos generados para la práctica de dispersión
+practica_02_medidas_dispersion <- read_csv("02_Medidas de dispersión/calificaciones.csv")
 
-practica_02_medidas_dispersion <- read_csv("02_Medidas de dispersión/datos_practicas_medidas_dispersion.csv")
 
-
-practica_02_medidas_dispersion %>% 
-  group_by(curso) %>% 
-  summarise(
-    promedio=mean(calificacion),
-    desviacion=sd(calificacion)
+practica_02_medidas_dispersion %>%  #tomamos el objeto practicas_02_medidas_dispersion
+  group_by(curso) %>%               #lo agrupamos conforme a algún dato
+  summarise(                        #le indicamos que elabore un resumen
+    promedio=mean(calificacion),    #y que ese resumentenga promedio de la calificacion
+    desviacion=sd(calificacion)     #así como la desviación estándard de la calificación
   )
 
+#volvemos a obtener el cálculo y lo guardamos como un nuevo objeto: tabla_calculos
+
+tabla_calculos <- 
+practica_02_medidas_dispersion %>%  #tomamos el objeto practicas_02_medidas_dispersion
+  group_by(curso) %>%               #lo agrupamos conforme a algún dato
+  summarise(                        #le indicamos que elabore un resumen
+    promedio=mean(calificacion),    #y que ese resumentenga promedio de la calificacion
+    desviacion=sd(calificacion)     #así como la desviación estándard de la calificación
+  )
+
+
+peso_estatura <- read_csv("02_Medidas de dispersión/peso_estatura.csv")
+
+peso_estatura$estatura %>% mean #calculamos la media de la estatura 
+peso_estatura$estatura %>% sd   #calculamos la desviación de la estatura
+
+estatura_media <- peso_estatura$estatura %>% mean #calculamos la media de la estatura y la guardamos en el objeto estatura_media
+estatura_desviacion <- peso_estatura$estatura %>% sd   #calculamos la desviación de la estatura y lo guardamos en el objeto estatura_desviacion
+
+estatura_desviacion/estatura_media*100 #calculamos el coeficiente de variacion y lo multiplicamos por 100 para que se represente directamente como porcentaje
+
+
+
+# aplicamos ahora 
+tabla_calculos <- 
+practica_02_medidas_dispersion %>%  #tomamos el objeto practicas_02_medidas_dispersion
+  group_by(curso) %>%               #lo agrupamos conforme a algún dato
+  summarise(                        #le indicamos que elabore un resumen
+    promedio=mean(calificacion),    #y que ese resumentenga promedio de la calificacion
+    desviacion=sd(calificacion) ,    #así como la desviación estándard de la calificación
+    coeficientevariacion=sd(calificacion)/mean(calificacion) #### agregamos esta opción, para  hacer rápidamente el cálculo del coeficiente de variación
+  )
 
 
 ```
