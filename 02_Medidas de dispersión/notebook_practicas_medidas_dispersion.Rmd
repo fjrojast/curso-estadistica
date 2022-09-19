@@ -17,7 +17,7 @@ library(tidyverse)
 ## cálculo de media y desviación estándard
 
 # Lee el archivo con los datos generados para la práctica de dispersión
-practica_02_medidas_dispersion <- read_csv("02_Medidas de dispersión/calificaciones.csv")
+practica_02_medidas_dispersion <- read_csv("00_datos/calificaciones_genero_curso.csv")
 
 
 practica_02_medidas_dispersion %>%  #tomamos el objeto practicas_02_medidas_dispersion
@@ -38,7 +38,7 @@ practica_02_medidas_dispersion %>%  #tomamos el objeto practicas_02_medidas_disp
   )
 
 
-peso_estatura <- read_csv("02_Medidas de dispersión/peso_estatura.csv")
+peso_estatura <- read_csv("00_datos/peso_estatura.csv")
 
 peso_estatura$estatura %>% mean #calculamos la media de la estatura 
 peso_estatura$estatura %>% sd   #calculamos la desviación de la estatura
