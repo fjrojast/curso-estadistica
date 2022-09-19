@@ -1,0 +1,86 @@
+---
+title: "R Notebook"
+output: html_notebook
+editor_options: 
+  chunk_output_type: console
+---
+```{r}
+library(tidyverse)
+library(openxlsx)
+datos <- rbind(
+  as.tibble(sample(5:6,190,replace = T)),
+  as.tibble(sample(7:8,2120,replace = T)),
+  as.tibble(sample(9:10,3920,replace = T))
+  
+) %>% 
+  rename(calificacion=value) %>% 
+  cbind(sample(c("Juan","Alberto","Roberto","Flor","Jimena","Raul","Jose","María","Julian","Michael","Carmen","Luz","Luz María","Jose Luis","Aurora","Rosa","Elia","Leticia","Concepcion","Manuel","Ivan","Fernando"),6230,replace = T) %>% as_tibble()) %>%rename("Nombre del estudiante"=value) %>% 
+  cbind(sample(c("Matemáticas","Español","Matemáticas","Español","Matemáticas","Español","Geografía","Historia","Educación física"),6230,replace = T) %>% as_tibble()) %>%  rename("Materia evaluada"=value) %>% 
+    cbind(sample(c(10,11,12,13,14,15,16,17),6230,replace = T) %>% as_tibble()) %>%  rename(dia=value) %>% 
+    cbind(sample(c("Muy distraido","Distraido","Concentrado","Muy concentrado"),6230,replace = T) %>% as_tibble()) %>%  rename("El nivel de concentración que mostró en clase"=value) %>% 
+    cbind(sample(c("Completamente","Parcialmente","Sin tarea"),6230,replace = T) %>% as_tibble()) %>%  rename("Trajo las tareas que se le solicitaron"=value)  %>% 
+    cbind(sample(c("temperatura normal","temperatura normal","temperatura normal","temperatura normal","temperatura normal","temperatura normal","febricula","febricula","temperatur alta"),6230,replace = T) %>% as_tibble()) %>%  rename("Temperatura tomada al ingreso"=value) %>% 
+  cbind(sample(c("primero","segundo","tercero","cuarto"),6230,replace = T) %>% as_tibble()) %>%  rename("Trimestre evaluado"=value)# %>% 
+  
+  datos %>%  write.xlsx("evaluacion_para_proyecto_integrador.xlsx",overwrite = T)
+
+read.xlsx("https://github.com/fjrojast/curso-estadistica/raw/main/evaluacion_para_proyecto_integrador.xlsx ")
+
+```
+```{r}
+
+
+library(tidyverse)
+library(readxl)
+
+
+
+# calificaciones2 <- rnorm(6230,mean = 8) %>% as_tibble() %>% filter(value<=10)
+calificaciones2 <- read_excel("calificaciones_probabilidad.xlsx") #reemplacen la ubicación del archivo utilizando file.choose()
+
+calificaciones2 %>% ggplot(aes(value))+ 
+  geom_histogram(binwidth = 1) +
+  labs(x="Calificacion obtenida",y="Cantidad")
+
+
+calificaciones2 %>% ggplot(aes(value))+ 
+  geom_density()+
+  labs(x="Calificacion obtenida",y="Frecuencia")
+
+
+calificaciones2$value %>% 
+  summary()
+
+calificaciones2$value %>% 
+  sd()
+
+
+pnorm(q = 6,  mean = 7.953, sd=0.93779 , lower.tail = F )
+
+
+library(openxlsx)
+calificaciones2 %>% write.xlsx("calificaciones_probabilidad.xlsx")
+
+
+
+install.packages("prob")
+library(prob)
+
+dados <- rolldie(2) 
+
+
+datos %>% 
+  as_tibble() %>% 
+  mutate(total=X1+X2) %>% 
+  filter(total==7)
+
+
+
+prob::roulette()
+tosscoin(5) %>% as_tibble()
+
+permsn(28,2 ) %>% t() %>% as_tibble() %>% arrange(V1) %>% view
+combn(28,2) %>% t() %>% as_tibble() %>% arrange(V1) %>% view
+
+```
+

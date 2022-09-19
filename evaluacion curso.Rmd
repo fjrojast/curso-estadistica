@@ -1,0 +1,32 @@
+---
+title: "R Notebook"
+output: html_notebook
+editor_options: 
+  chunk_output_type: console
+---
+```{r}
+library(tidyverse)
+library(moments)
+autoevaluación <- read_csv( "/home/frojas2/Descargas/Autoevaluación de mis habilidades y nivel de comprensión de lo abordado en el curso.csv")
+
+autoevaluación %>% glimpse
+
+autoevaluación %>% 
+  select(-Grupos,-Nombre_de_usuario,-Fecha) %>% 
+  pivot_longer(cols = `Del 1 al 5, donde 1 es el mínimo y 5 el máximo, ¿Qué tan oportuno o necesario es que trabajes en clase la Instalación de R y Rstudio)?`:`Del 1 al 5, donde 1 es el mínimo y 5 el máximo, ¿Qué tan oportuno o necesario es que trabajes en clase el tema  <a class="autolink" title="2.8 Medidas de forma" href="https://ava.eneut.edu.mx/mod/lesson/view.php?id=4217">2.8 Medidas de forma</a>?`  ,
+    names_to = "tema",
+               values_to= "valuacion"
+    
+  ) %>% 
+  mutate(
+    tema=str_remove(tema,"Del 1 al 5, donde 1 es el mínimo y 5 el máximo, ¿Qué tan oportuno o necesario es que trabajes en clase"),
+    # tema=str_extract(tema,"\\*minimo\\*")
+    ) %>% 
+  group_by(`Nombre completo del usuario`) %>% 
+  summarise(promedio=mean(valuacion),
+            desviacion=sd(valuacion),
+            asimetria=skew(valuacion)
+            ) %>% 
+  arrange(promedio) %>% view
+```
+

@@ -1,0 +1,72 @@
+---
+title: "R Notebook"
+output: html_notebook
+editor_options: 
+  chunk_output_type: console
+---
+
+This is an [R Markdown](http://rmarkdown.rstudio.com) Notebook. When you execute code within the notebook, the results appear beneath the code. 
+
+Try executing this chunk by clicking the *Run* button within the chunk or by placing your cursor inside it and pressing *Ctrl+Shift+Enter*. 
+
+
+
+```{r}
+
+library(googlesheets4)
+library(tidyverse)
+
+demostracion <- read_sheet("https://docs.google.com/spreadsheets/d/1tA0bcdwAMEVcmlosgVFXmcmfkJNCEZmRB6otM6tgQ08/edit#gid=1004787557")
+
+
+demostracion 
+
+
+cor(
+  demostracion$Portada,
+  demostracion$Portada
+)
+
+plot(
+  demostracion$Portada,
+  demostracion$Portada
+)
+
+cor(
+  demostracion$Creatividad,
+  demostracion$`Otras formas de ser del personaje`
+  
+)
+
+plot(
+  demostracion$Creatividad,
+  demostracion$`Otras formas de ser del personaje`
+)
+
+demostracion %>% 
+  ggplot(aes(Creatividad,`Otras formas de ser del personaje`))+ geom_point()+geom_jitter()
+
+
+demostracion$Portada
+
+
+
+```
+```{r}
+
+demostracion %>% 
+  select(Portada:`Características físicas del personaje`) %>% 
+  cor
+  
+demostracion %>% glimpse
+
+demostracion %>% 
+  select(Portada:`Otras formas de ser del personaje`) %>% 
+  cor %>% 
+  corrplot()
+
+
+library(corrplot)
+
+```
+

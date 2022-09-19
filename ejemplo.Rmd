@@ -1,0 +1,82 @@
+---
+title: "Mis evaluaciones"
+output: html_document
+editor_options: 
+  chunk_output_type: console
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(
+	echo = FALSE,
+	message = FALSE,
+	warning = TRUE
+)
+```
+
+```{r}
+library(tidyverse)
+library(openxlsx)
+library(readxl)
+library(magrittr)
+library(kableExtra)
+datos <- read_xlsx("/home/frojas2/Documentos/asesoria/lupita/tablas.xlsx")
+
+datos %<>% 
+  select(-contains("conducta"))
+
+datos %<>% 
+  pivot_longer(
+    cols=-1,
+    names_to="prueba",
+    values_to = "calificacion"
+               ) %>% 
+  separate(prueba,into=c("prueba","ocasion"),sep="-") 
+  # replace_na(list(calificacion=0))
+
+```
+
+
+
+Niños que tienen más diversidad en sus calificaciones
+```{r}
+
+datos %>% 
+  group_by(Nombre) %>%
+  summarise(variación=sd(calificacion,na.rm = T)) %>% 
+  arrange(desc(variación)) %>% 
+  kbl %>% 
+  kable_material()
+  
+```
+
+Promedio obtenido por niño
+```{r}
+datos %>% 
+  group_by(Nombre) %>%
+  summarise(promedio=mean(calificacion)) %>% 
+  arrange(desc(promedio)) %>% 
+  kbl %>% 
+  kable_material()
+
+
+```
+Gráfica general
+```{r}
+datos %>% 
+  group_by(Nombre) %>%
+  summarise(promedio=mean(calificacion)) %>% 
+  arrange(desc(promedio)) %>%
+  ggplot(aes(x=promedio))+geom_histogram(bins=5)+ theme_grey()
+
+```
+
+Gráfica por niño
+```{r}
+datos %>% 
+  group_by(Nombre) %>%
+  summarise(promedio=mean(calificacion)) %>% 
+  arrange(desc(promedio)) %>%
+  ggplot(aes(x=promedio))+geom_histogram(bins=5,alpha=.3)+ theme_grey()+facet_wrap(vars(Nombre))
+```
+
+
