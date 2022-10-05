@@ -110,6 +110,10 @@ tdf <- calificaciones_muybajas %>%
     promedio=mean(calificacion),
     desviacion=sd(calificacion)
             )
+  
+  calificaciones_muybajas$calificacion %>% quantile
+  
+  
 ```
 
 ### Análisis Calificaciones bajas
@@ -129,6 +133,11 @@ tdf <- calificaciones_bajas %>%
     promedio=mean(calificacion),
     desviacion=sd(calificacion)
             )
+  
+  
+    calificaciones_bajas$calificacion %>% quantile
+  
+  
 ```
 
 ### Análisis Calificaciones medias
@@ -148,6 +157,10 @@ tdf <- calificaciones_medias %>%
     promedio=mean(calificacion),
     desviacion=sd(calificacion)
             )
+  
+    calificaciones_medias$calificacion %>% quantile
+  
+  
 ```
 
 ### Análisis Calificaciones altas
@@ -167,6 +180,9 @@ tdf <- calificaciones_altas %>%
     promedio=mean(calificacion),
     desviacion=sd(calificacion)
             )
+  
+  
+    calificaciones_altas$calificacion %>% quantile
 ```
 
 ### Análisis calificaciones muy altas
@@ -186,6 +202,8 @@ tdf <- calificaciones_muyaltas %>%
     promedio=mean(calificacion),
     desviacion=sd(calificacion)
             )
+  
+    calificaciones_muyaltas$calificacion %>% quantile
 ```
 
 ```{r}
