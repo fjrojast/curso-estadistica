@@ -6,7 +6,7 @@
 
 library(tidyverse)
 library(googlesheets4)   #importante, instalarla utilizando install.packages("googlesheets4")
-
+library(lubridate)
 
 
 
@@ -44,6 +44,14 @@ encuesta %>%
 # Promedio de opinión conforme a los sentimientos manifestados ------------
 
 encuesta %>% 
-  group_by(`¿cómo te sientes en este momento?`) %>% 
-  summarise(promedio=mean(`En una escala del 1 al 5, en donde 1 es desastroso y 5 se considera estupendo, ¿como opinas que fue tu desplazamiento hacia la escuela el día de hoy ?`,na.rm=T)) %>% 
+  group_by(`Marca temporal` %>% ) %>% 
+  summarise(
+    promedio=mean(`En una escala del 1 al 5, en donde 1 es desastroso y 5 se considera estupendo, ¿como opinas que fue tu desplazamiento hacia la escuela el día de hoy ?`,na.rm=T),
+    cantidad=n(),
+     desviacion=sd(`En una escala del 1 al 5, en donde 1 es desastroso y 5 se considera estupendo, ¿como opinas que fue tu desplazamiento hacia la escuela el día de hoy ?`,na.rm=T),
+    cuartiles=IQR(`En una escala del 1 al 5, en donde 1 es desastroso y 5 se considera estupendo, ¿como opinas que fue tu desplazamiento hacia la escuela el día de hoy ?`,na.rm=T)
+    
+    
+    
+    ) %>% 
   arrange(desc(promedio))
