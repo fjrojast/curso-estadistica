@@ -1,0 +1,55 @@
+---
+title: "R Notebook"
+output: html_notebook
+editor_options: 
+  chunk_output_type: console
+---
+
+
+
+```{r}
+
+plickers <- read_csv("/home/frojas2/Descargas/Estadística 31_10_2022-01_11_2022 .csv",col_names = F,show_col_types = F)
+
+metadatos <- plickers[1,1] 
+metadatos %<>% separate(1,into=c("Curso","fechas"),sep=" ") %>% 
+ separate(fechas,into=c("fechainicio","fechafin"),sep="-") %>% 
+  mutate(Curso=Curso %>% as_factor(),
+         fechainicio=dmy(fechainicio),
+         fechafin=dmy(fechafin)
+  )
+names(plickers) <- plickers %>% slice(3) %>% as_vector()
+
+# metadatos %>%   mutate(across(2:3),.fns=as_factor())
+#   separate(fechas,into=c("fecha inicio","fecha fin",sep="-"))
+  
+preguntas_set <- plickers[4,7:ncol(plickers)]
+names(preguntas_set) <- str_c("set_",names(preguntas_set))
+# preguntas_set %<>% select(7:ncol(correctas))
+preguntas_url <- plickers[5,7:ncol(plickers)]
+# preguntas_url %<>% select(7:ncol(correctas))
+correctas <- plickers[6,7:ncol(plickers)]
+# correctas %<>% select(7:ncol(correctas))
+
+
+plickers %<>% slice(7:nrow(.))
+plickers %>%  
+  mutate(across(c(`Card Number`,Correct,Answered)),.fns= as.numeric())
+         
+# plickers %>% bind_cols(preguntas_set,) 
+# plickers %<>% bind_cols(metadatos)
+plickers <- metadatos %>% bind_cols(plickers)
+# plickers %<>% plickers[]
+  # filter(!is.na(`Card Number`)) %>% 
+  # mutate(across(7:ncol(.),.fns = as_factor))
+
+# levels(plickers$`¿cuanto es 4*5?`)
+# plickers %>% select(7:8) %>% glimpse
+
+plickers %>% pivot_longer(cols=7:ncol(.),names_to = "reactivo",values_to = "resultado")
+plickers %>% view
+plickers$
+
+
+```
+
