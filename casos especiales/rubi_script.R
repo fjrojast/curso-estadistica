@@ -1,24 +1,26 @@
 library(tidyverse)
-
-
-file.choose()
-
+library(corrplot)
 library(readxl)
 library(googlesheets4)
+
+
 datos <- read_sheet("https://docs.google.com/spreadsheets/d/1eIHgdnQWEz7gGUK0IUATkHhwqZOEFe4InNN0CP17sE0/edit?usp=sharing")
 
 
 # datos <- read_excel("/home/frojas/Descargas/Evaluación de alumnos de segundo grado .xlsx")
 
 
-datos %>% glimpse
+datos %>% view
+datos %>% 
+  glimpse
 
 
 datos %>% 
   mutate(across(2:ncol(.),as.character)) %>% 
   pivot_longer(2:ncol(.), names_to = "aspecto",values_to = "evaluacion") %>% 
   separate(aspecto,into=c("aspecto","estudiante"),sep="---") %>% 
-  mutate(evaluacion = evaluacion %>% str_replace_all(
+  mutate(evaluacion = evaluacion %>% 
+           str_replace_all(
     c(
       "Nivel esperado" = "4",
       "En desarrollo" = "3",
@@ -30,7 +32,6 @@ datos %>%
       "Puede mejorar" = "1"
       
     ),
-    # estudiante=estudiante %>% str_squish(str_remove(estudiante,"\\[\\]"))
       
   )) %>% 
   filter(
@@ -40,7 +41,8 @@ datos %>%
     evaluacion=="4"
   ) %>% 
   filter(!is.na(estudiante),!is.na(evaluacion)) %>% 
-  pivot_wider(names_from = aspecto,values_from=evaluacion) %>% bind_cols(complete.cases(.)) %>% 
+  pivot_wider(names_from = aspecto,values_from=evaluacion) %>% 
+  bind_cols(complete.cases(.)) %>% 
   as_tibble %>% 
   filter(...14==T) %>% 
   mutate(across(3:13,as.numeric)) %>% 
@@ -58,13 +60,5 @@ datos %>%
          ) %>%  
   cor %>% 
   corrplot
-  distinct(evaluacion)
-  distinct(aspecto) %>% arrange(aspecto) %>% view
-  
-  iris %>% 
-    mutate(across(1:Petal.Width),round)
-  
-  iris %>%
-    as_tibble() %>%
-    mutate(across(1:Sepal.Width, round))
+
   
