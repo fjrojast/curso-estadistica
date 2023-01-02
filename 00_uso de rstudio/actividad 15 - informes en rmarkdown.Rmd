@@ -1,0 +1,49 @@
+---
+title: "Mi primer presentación"
+author: "Fernando Rojas"
+date: "2023-01-02"
+always_allow_html: true
+output:
+  powerpoint_presentation
+editor_options:
+  chunk_output_type: console
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+
+library(tidyverse)
+library(googlesheets4)
+library(kableExtra)
+
+
+datos <- read_sheet("https://docs.google.com/spreadsheets/d/1wAnZggeEfXaNnUDuqvmpK9zJuRoduMV4K4V_94K4SRk/edit?usp=sharing")
+
+
+```
+
+# Presentación del grupo de 1° A
+
+## Los 5 mejores promedios de la materia de Matemáticas
+
+```{r}
+datos %>% 
+  group_by(`Nombre del alumno`) %>% 
+  summarise(promedio=mean(Matemáticas,na.rm = T)) %>% 
+  arrange(desc(promedio)) %>% 
+  head() %>% 
+  kbl %>% 
+  kable_material_dark()
+
+```
+Cantidad de evaluaciones realizadas:
+```{r}
+nrow(datos) %>% kbl %>% kable_material()
+```
+
+Se realizaron `r nrow(datos)` cantidad de evaluaciones
+
+
+## Propuesta de evaluación
+
+## Resultados
